@@ -27,7 +27,7 @@ public class CorsConfig implements WebMvcConfigurer {
         String[] headers = allowedHeaders.split(",");
 
         registry.addMapping("/**")
-                .allowedOrigins(origins)
+                .allowedOriginPatterns(origins) // 使用 allowedOriginPatterns 支持通配符与 credentials 共存
                 .allowedMethods(methods)
                 .allowedHeaders(headers)
                 .allowCredentials(allowCredentials)

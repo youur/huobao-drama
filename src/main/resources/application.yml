@@ -39,7 +39,7 @@ management:
 
 huobao:
   cors:
-    allowed-origins: "http://localhost:3012"
+    allowed-origins: "*" # 使用通配符支持所有 IP 访问
     allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
     allowed-headers: "*"
     allow-credentials: true

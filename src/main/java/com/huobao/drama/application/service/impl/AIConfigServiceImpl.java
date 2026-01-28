@@ -65,8 +65,17 @@ public class AIConfigServiceImpl implements AIConfigService {
     @Override
     public void testConnection(AIConfigDTO dto) {
         try {
+            String modelName = "";
+            if (dto.getModel() != null) {
+                if (dto.getModel() instanceof java.util.List) {
+                    java.util.List<?> list = (java.util.List<?>) dto.getModel();
+                    if (!list.isEmpty()) modelName = list.get(0).toString();
+                } else {
+                    modelName = dto.getModel().toString();
+                }
+            }
             // Test with a simple prompt
-            openAIService.generateText("hi", null, dto.getModel(), dto.getBaseUrl(), dto.getApiKey(), dto.getEndpoint());
+            openAIService.generateText("hi", null, modelName, dto.getBaseUrl(), dto.getApiKey(), dto.getEndpoint());
         } catch (Exception e) {
             log.error("AI connection test failed", e);
             throw new BusinessException(400, "Connection test failed: " + e.getMessage());
@@ -79,7 +88,19 @@ public class AIConfigServiceImpl implements AIConfigService {
         if (dto.getName() != null) config.setName(dto.getName());
         if (dto.getBaseUrl() != null) config.setBaseUrl(dto.getBaseUrl());
         if (dto.getApiKey() != null) config.setApiKey(dto.getApiKey());
-        if (dto.getModel() != null) config.setModel(dto.getModel());
+        
+        // 处理 model 字段：可能是 String 或 List
+        if (dto.getModel() != null) {
+            if (dto.getModel() instanceof java.util.List) {
+                java.util.List<?> list = (java.util.List<?>) dto.getModel();
+                if (!list.isEmpty()) {
+                    config.setModel(list.get(0).toString()); // 取第一个模型名
+                }
+            } else {
+                config.setModel(dto.getModel().toString());
+            }
+        }
+        
         if (dto.getEndpoint() != null) config.setEndpoint(dto.getEndpoint());
         if (dto.getQueryEndpoint() != null) config.setQueryEndpoint(dto.getQueryEndpoint());
         if (dto.getPriority() != null) config.setPriority(dto.getPriority());

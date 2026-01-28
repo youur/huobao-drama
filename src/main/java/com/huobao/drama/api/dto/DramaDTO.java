@@ -1,5 +1,4 @@
-package com.huobao.drama.api.dto;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -16,7 +15,10 @@ public class DramaDTO {
     private String description;
     private String genre;
     private String style;
+    
+    @JsonProperty("total_episodes")
     private Integer totalEpisodes;
+    
     private String status;
     private String thumbnail;
     private List<String> tags;
