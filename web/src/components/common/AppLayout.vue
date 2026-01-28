@@ -1,5 +1,7 @@
 <template>
   <div class="app-layout">
+    <div class="ambient-background"></div>
+    
     <!-- Global Header -->
     <header class="app-header">
       <div class="header-content">
@@ -11,11 +13,10 @@
         <div class="header-right">
           <LanguageSwitcher />
           <ThemeToggle />
-          <el-button @click="showAIConfig = true" class="header-btn">
+          <el-button @click="showAIConfig = true" class="header-btn glass-btn">
             <el-icon><Setting /></el-icon>
             <span class="btn-text">{{ $t('drama.aiConfig') }}</span>
           </el-button>
-          <!-- <el-button :icon="Setting" circle @click="showAIConfig = true" :title="$t('aiConfig.title')" /> -->
         </div>
       </div>
     </header>
@@ -45,81 +46,119 @@ const showAIConfig = ref(false)
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  /* Apple-style base font */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #fbfbfd; /* Apple website light gray */
+}
+
+/* Ambient Background Effect */
+.ambient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(0, 122, 255, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(88, 86, 214, 0.03), transparent 25%);
 }
 
 .app-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border-primary);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.72); /* High transparency */
+  backdrop-filter: saturate(180%) blur(20px); /* Apple-style frost */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+  transition: all 0.3s ease;
 }
 
 .header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-4);
-  height: 56px;
-  max-width: 100%;
+  padding: 0 24px;
+  height: 52px; /* Slightly shorter, more elegant */
+  max-width: 1400px;
   margin: 0 auto;
 }
+
 .header-btn {
-  border-radius: var(--radius-lg);
+  border-radius: 999px; /* Pill shape */
   font-weight: 500;
-}
-
-.header-btn.primary {
-  background: linear-gradient(135deg, var(--accent) 0%, #0284c7 100%);
+  padding: 8px 16px;
+  height: 32px;
   border: none;
-  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1d1d1f;
+  transition: all 0.2s ease;
 }
 
-.header-btn.primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+.header-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: scale(1.02);
 }
+
 .header-left {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: 24px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
   text-decoration: none;
-  color: var(--text-primary);
-  font-weight: 700;
-  font-size: 1.125rem;
-  transition: opacity var(--transition-fast);
+  transition: opacity 0.2s;
 }
 
 .logo:hover {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .logo-text {
-  background: linear-gradient(135deg, var(--accent) 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 600;
+  font-size: 17px; /* Apple standard body size */
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 12px;
 }
 
 .app-main {
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 /* Dark mode adjustments */
+.dark .app-layout {
+  background-color: #000000;
+}
+
 .dark .app-header {
-  background: rgba(26, 33, 41, 0.95);
+  background: rgba(29, 29, 31, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .logo-text {
+  color: #f5f5f7;
+}
+
+.dark .header-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+}
+
+.dark .header-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 </style>

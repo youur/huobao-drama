@@ -1,5 +1,5 @@
 server:
-  port: 5679  # 临时修改端口，避免冲突
+  port: 5679
   servlet:
     context-path: /
 
@@ -7,17 +7,18 @@ spring:
   application:
     name: huobao-drama
   datasource:
-    # 确保路径是绝对路径或明确的相对路径
+    # 使用明确的相对路径
     url: jdbc:sqlite:data/drama_generator.db
-    driver-class-name: org.sqlite.JDBC  # 更改为更通用的类名
+    driver-class-name: org.sqlite.JDBC
     hikari:
       maximum-pool-size: 1
+      connection-timeout: 30000
   jpa:
     database-platform: com.huobao.drama.config.SQLiteDialect
+    # --- 核心修复：彻底禁用 Hibernate 自动建表 ---
     hibernate:
-      # --- 核心修复：关闭自动 DDL，避免与 Flyway 冲突 ---
       ddl-auto: none
-      # ---------------------------------------------
+    # ----------------------------------------
     show-sql: true
     properties:
       hibernate:
@@ -28,16 +29,13 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
-    validate-on-migrate: false # 忽略校验错误以保证启动
+    validate-on-migrate: false
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics
-  endpoint:
-    health:
-      show-details: always
 
 huobao:
   cors:
@@ -47,17 +45,10 @@ huobao:
     allow-credentials: true
   ratelimit:
     enabled: false
-    permits-per-minute: 60
   storage:
     local-root: "./data/storage"
-  ffmpeg:
-    path: "ffmpeg"
-  ai:
-    openai:
-      api-key: ${OPENAI_API_KEY:}
-    gemini:
-      api-key: ${GEMINI_API_KEY:}
-    volcengine:
-      access-key: ${VOLCENGINE_ACCESS_KEY:}
-      secret-key: ${VOLCENGINE_SECRET_KEY:}
-      endpoint: ${VOLCENGINE_ENDPOINT:}
+
+logging:
+  level:
+    com.huobao.drama: DEBUG
+    org.hibernate.SQL: DEBUG

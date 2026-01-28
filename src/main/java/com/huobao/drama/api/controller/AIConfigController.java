@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/settings/ai-configs")
+@RequestMapping("/api/ai-configs")
 @RequiredArgsConstructor
 public class AIConfigController {
 

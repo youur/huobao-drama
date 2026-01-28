@@ -56,24 +56,29 @@ public class DramaServiceImpl implements DramaService {
 
     @Override
     public Page<Drama> listDramas(String status, String genre, String keyword, Pageable pageable) {
-        Specification<Drama> spec = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (status != null && !status.isEmpty()) {
-                predicates.add(cb.equal(root.get("status"), status));
-            }
-            if (genre != null && !genre.isEmpty()) {
-                predicates.add(cb.equal(root.get("genre"), genre));
-            }
-            if (keyword != null && !keyword.isEmpty()) {
-                String pattern = "%" + keyword + "%";
-                predicates.add(cb.or(
-                        cb.like(root.get("title"), pattern),
-                        cb.like(root.get("description"), pattern)
-                ));
-            }
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-        return dramaRepository.findAll(spec, pageable);
+        try {
+            Specification<Drama> spec = (root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (status != null && !status.isEmpty()) {
+                    predicates.add(cb.equal(root.get("status"), status));
+                }
+                if (genre != null && !genre.isEmpty()) {
+                    predicates.add(cb.equal(root.get("genre"), genre));
+                }
+                if (keyword != null && !keyword.isEmpty()) {
+                    String pattern = "%" + keyword + "%";
+                    predicates.add(cb.or(
+                            cb.like(root.get("title"), pattern),
+                            cb.like(root.get("description"), pattern)
+                    ));
+                }
+                return predicates.isEmpty() ? null : cb.and(predicates.toArray(new Predicate[0]));
+            };
+            return dramaRepository.findAll(spec, pageable);
+        } catch (Exception e) {
+            log.error("Error listing dramas with filters: status={}, genre={}, keyword={}", status, genre, keyword, e);
+            throw e;
+        }
     }
 
     @Override

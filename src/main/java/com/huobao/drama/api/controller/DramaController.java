@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/dramas")
@@ -31,16 +33,30 @@ public class DramaController {
     }
 
     @GetMapping
-    public ApiResponse<Page<Drama>> listDramas(
+    public ApiResponse<Map<String, Object>> listDramas(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "20") int pageSize) {
+            @RequestParam(defaultValue = "12") int page_size) {
         
-        // Convert 1-based page to 0-based for Spring Data
-        Pageable pageable = PageRequest.of(page - 1, Math.min(pageSize, 200), Sort.by("updatedAt").descending());
-        return ApiResponse.success(dramaService.listDramas(status, genre, keyword, pageable));
+        // 修正排序字段为 id，确保最基础的查询能够跑通
+        Pageable pageable = PageRequest.of(page - 1, Math.min(page_size, 200), Sort.by("id").descending());
+        
+        Page<Drama> dramaPage = dramaService.listDramas(status, genre, keyword, pageable);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("items", dramaPage.getContent());
+        
+        Map<String, Object> pagination = new HashMap<>();
+        pagination.put("page", page);
+        pagination.put("page_size", page_size);
+        pagination.put("total", dramaPage.getTotalElements());
+        pagination.put("total_pages", dramaPage.getTotalPages());
+        
+        result.put("pagination", pagination);
+        
+        return ApiResponse.success(result);
     }
 
     @PutMapping("/{id}")

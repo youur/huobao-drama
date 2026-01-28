@@ -1,8 +1,6 @@
 <template>
-  <!-- Empty State Component - Display when no data available -->
-  <!-- 空状态组件 - 无数据时的展示 -->
   <div :class="['empty-state', `size-${size}`]">
-    <div class="empty-icon" :class="{ 'has-animation': animated }">
+    <div class="empty-icon">
       <el-icon :size="iconSize">
         <component :is="icon" />
       </el-icon>
@@ -19,28 +17,21 @@
 import { computed, type Component } from 'vue'
 import { FolderOpened } from '@element-plus/icons-vue'
 
-/**
- * EmptyState - Display when no data is available
- * 空状态组件 - 无数据时的占位展示
- */
 const props = withDefaults(defineProps<{
   title: string
   description?: string
   icon?: Component
   size?: 'small' | 'medium' | 'large'
-  animated?: boolean
 }>(), {
   icon: FolderOpened,
-  size: 'medium',
-  animated: true
+  size: 'medium'
 })
 
-// Icon size based on component size / 根据组件尺寸设置图标大小
 const iconSize = computed(() => {
   const sizes = {
-    small: 32,
-    medium: 48,
-    large: 64
+    small: 40,
+    medium: 56,
+    large: 72
   }
   return sizes[props.size]
 })
@@ -53,78 +44,66 @@ const iconSize = computed(() => {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-8) var(--space-4);
+  padding: 64px 24px;
+  background: transparent;
 }
 
-/* Size variants / 尺寸变体 */
-.size-small {
-  padding: var(--space-6) var(--space-4);
-}
-
-.size-small .empty-title {
-  font-size: 0.9375rem;
-}
-
-.size-small .empty-description {
-  font-size: 0.8125rem;
-}
-
-.size-large {
-  padding: var(--space-12) var(--space-6);
-}
-
-.size-large .empty-title {
-  font-size: 1.25rem;
-}
-
-/* Icon / 图标 */
+/* Icon */
 .empty-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  margin-bottom: var(--space-4);
-  background: linear-gradient(135deg, var(--accent) 0%, #06b6d4 100%);
-  border-radius: 50%;
-  color: white;
+  margin-bottom: 24px;
+  color: #86868b; /* Apple muted gray */
+  opacity: 0.8;
+  transition: transform 0.3s ease;
 }
 
-.empty-icon.has-animation {
-  animation: pulse-glow 3s ease-in-out infinite;
+.empty-state:hover .empty-icon {
+  transform: scale(1.05);
+  color: #007aff; /* Apple Blue on hover */
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(14, 165, 233, 0.5);
-  }
-}
-
-/* Title / 标题 */
+/* Title */
 .empty-title {
-  margin: 0 0 var(--space-2) 0;
-  font-size: 1.0625rem;
+  margin: 0 0 12px 0;
+  font-size: 21px; /* SF Pro Display size */
   font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  color: #1d1d1f;
+  letter-spacing: 0.01em;
 }
 
-/* Description / 描述 */
+/* Description */
 .empty-description {
   margin: 0;
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  max-width: 320px;
+  font-size: 16px;
+  color: #86868b;
+  max-width: 400px;
   line-height: 1.5;
+  font-weight: 400;
 }
 
-/* Actions / 操作区 */
+/* Actions */
 .empty-actions {
-  margin-top: var(--space-5);
+  margin-top: 32px;
   display: flex;
-  gap: var(--space-3);
+  gap: 16px;
+}
+
+/* Dark mode */
+.dark .empty-icon {
+  color: #6e6e73;
+}
+
+.dark .empty-state:hover .empty-icon {
+  color: #0a84ff;
+}
+
+.dark .empty-title {
+  color: #f5f5f7;
+}
+
+.dark .empty-description {
+  color: #86868b;
 }
 </style>
