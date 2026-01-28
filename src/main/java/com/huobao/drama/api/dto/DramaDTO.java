@@ -1,3 +1,5 @@
+package com.huobao.drama.api.dto;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import javax.validation.constraints.NotBlank;

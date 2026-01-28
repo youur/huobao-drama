@@ -1,3 +1,5 @@
+package com.huobao.drama.api.dto;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -33,10 +35,10 @@ public class AIConfigDTO {
     private Integer priority;
     
     @JsonProperty("is_default")
-    private Integer isDefault;
+    private Boolean isDefault;
     
     @JsonProperty("is_active")
-    private Integer isActive;
+    private Boolean isActive;
     
     private String settings;
 }

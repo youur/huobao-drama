@@ -6,6 +6,8 @@ import com.huobao.drama.api.dto.DramaDTO;
 import com.huobao.drama.application.service.DramaService;
 import com.huobao.drama.common.exception.BusinessException;
 import com.huobao.drama.domain.model.Drama;
+import com.huobao.drama.domain.model.DramaCharacter;
+import com.huobao.drama.domain.repository.DramaCharacterRepository;
 import com.huobao.drama.domain.repository.DramaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.huobao.drama.domain.model.DramaCharacter;
-import com.huobao.drama.domain.repository.DramaCharacterRepository;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j

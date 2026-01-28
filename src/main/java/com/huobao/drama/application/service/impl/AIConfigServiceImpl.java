@@ -104,8 +104,8 @@ public class AIConfigServiceImpl implements AIConfigService {
         if (dto.getEndpoint() != null) config.setEndpoint(dto.getEndpoint());
         if (dto.getQueryEndpoint() != null) config.setQueryEndpoint(dto.getQueryEndpoint());
         if (dto.getPriority() != null) config.setPriority(dto.getPriority());
-        if (dto.getIsDefault() != null) config.setIsDefault(dto.getIsDefault());
-        if (dto.getIsActive() != null) config.setIsActive(dto.getIsActive());
+        if (dto.getIsDefault() != null) config.setIsDefault(dto.getIsDefault() ? 1 : 0);
+        if (dto.getIsActive() != null) config.setIsActive(dto.getIsActive() ? 1 : 0);
         if (dto.getSettings() != null) config.setSettings(dto.getSettings());
     }
 }
