@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.net.URI;
 import java.util.List;
 
-@FeignClient(name = "openaiClient")
+@FeignClient(name = "openaiClient", url = "http://placeholder") // 添加占位 URL 防止初始化报错
 public interface OpenAIClient {
 
     @PostMapping

@@ -31,6 +31,15 @@ public class Storyboard extends BaseEntity {
 
     private String time;
 
+    // --- 补全缺失的字段 ---
+    @Column(name = "shot_type")
+    private String shotType;
+
+    private String angle;
+
+    private String movement;
+    // -------------------
+
     @Column(nullable = false)
     private Integer duration = 0;
 

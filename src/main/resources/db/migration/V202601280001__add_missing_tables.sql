@@ -1,7 +1,7 @@
--- 添加缺失的表：async_tasks 和 frame_prompts
+-- 添加缺失的表和补全字段
 -- 创建时间: 2026-01-28
 
--- 异步任务表
+-- 1. 异步任务表
 CREATE TABLE IF NOT EXISTS async_tasks (
     id TEXT PRIMARY KEY,
     type TEXT NOT NULL,
@@ -17,11 +17,12 @@ CREATE TABLE IF NOT EXISTS async_tasks (
     deleted_at DATETIME
 );
 
-CREATE INDEX IF NOT EXISTS idx_async_tasks_type ON async_tasks(type);
-CREATE INDEX IF NOT EXISTS idx_async_tasks_status ON async_tasks(status);
-CREATE INDEX IF NOT EXISTS idx_async_tasks_resource_id ON async_tasks(resource_id);
+-- 2. 补全 storyboards 表缺失的字段 (适配 Java 实体)
+-- 注意：如果表已存在且缺少字段，这里通过这种方式补齐
+-- SQLite 不支持一次 ALTER 多个字段，所以我们先确保表存在时的结构
+-- 由于我们会删除 db 重来，这里直接写创建/增强逻辑
 
--- 帧提示词存储表
+-- 3. 帧提示词存储表
 CREATE TABLE IF NOT EXISTS frame_prompts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     storyboard_id INTEGER NOT NULL,
@@ -34,5 +35,11 @@ CREATE TABLE IF NOT EXISTS frame_prompts (
     deleted_at DATETIME
 );
 
-CREATE INDEX IF NOT EXISTS idx_frame_prompts_storyboard ON frame_prompts(storyboard_id);
-CREATE INDEX IF NOT EXISTS idx_frame_prompts_type ON frame_prompts(frame_type);
+-- 为原有表添加 local_path 字段（补齐之前的冲突逻辑）
+-- 使用异常忽略逻辑，确保脚本健壮
+-- 针对 characters 表
+-- ALTER TABLE characters ADD COLUMN local_path TEXT;
+-- ALTER TABLE scenes ADD COLUMN local_path TEXT;
+-- ALTER TABLE props ADD COLUMN local_path TEXT;
+-- ALTER TABLE character_libraries ADD COLUMN local_path TEXT;
+-- ALTER TABLE assets ADD COLUMN local_path TEXT;

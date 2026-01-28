@@ -5,7 +5,7 @@
       <div class="header-content">
         <div class="header-left">
           <router-link to="/" class="logo">
-            <span class="logo-text">🎬 HuoBao Drama</span>
+            <span class="logo-text">影梦空间 ShadowDream</span>
           </router-link>
         </div>
         <div class="header-right">
