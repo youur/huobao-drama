@@ -1,0 +1,55 @@
+server:
+  port: 5678
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: huobao-drama
+  datasource:
+    url: jdbc:sqlite:data/drama_generator.db
+    driver-class-name: org.xerial.sqlite.JDBC
+  jpa:
+    database-platform: com.github.gwenn.sqlite.HibernateSqliteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+huobao:
+  cors:
+    allowed-origins: "http://localhost:3012"
+    allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+    allowed-headers: "*"
+    allow-credentials: true
+  ratelimit:
+    enabled: false
+    permits-per-minute: 60
+  storage:
+    local-root: "./data/storage"
+  ffmpeg:
+    path: "ffmpeg"
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+    volcengine:
+      access-key: ${VOLCENGINE_ACCESS_KEY:}
+      secret-key: ${VOLCENGINE_SECRET_KEY:}
+      endpoint: ${VOLCENGINE_ENDPOINT:}
